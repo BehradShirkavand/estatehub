@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="col-md-7 container myForm">
-        <form id="job-main-form" th:action="@{/dashboard/addNew}" th:object="${propertyPostActivity}" method="post" class="property-add-form">
+        <form id="property-main-form" th:action="@{/dashboard/addNew}" th:object="${propertyPostActivity}" method="post" class="property-add-form">
             <input hidden type="text" th:field="*{propertyPostId}" >
             <input hidden type="text" th:field="*{propertyLocationId.Id}" >
             <input hidden type="text" th:field="*{estateAgencyId.Id}" >

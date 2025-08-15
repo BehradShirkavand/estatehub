@@ -92,7 +92,7 @@ a.primary {
   background-color: #fb4f14;
   margin-right: 0.5rem;
 }
-.logo_right .Recruiter_login_btn {
+.logo_right .Seller_login_btn {
   padding: 10px;
   border-radius: 0.45rem;
   background-color: #002244;
@@ -240,7 +240,7 @@ div.box {
   padding: 20px;
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
 }
-.box .job-row:hover {
+.box .property-row:hover {
   transition: all 100ms ease-in-out;
   transform: scale(1.01);
   opacity: 1;
@@ -254,14 +254,14 @@ label.large-label {
   font-weight: 500;
   color: black;
 }
-.job-title {
+.property-title {
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
   line-height: 24px;
   color: #002244;
 }
-.job-row {
+.property-row {
   align-items: center;
   justify-content: space-around;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -270,7 +270,7 @@ label.large-label {
   padding: 8px;
   margin: 20px 10px;
 }
-.job-row div label {
+.property-row div label {
   display: block;
   margin: 0;
   padding: 5px;
@@ -319,7 +319,7 @@ label.large-label {
   padding: 15px 10px;
   line-height: 140%;
 }
-.job_Spec_box {
+.property_Spec_box {
   padding: 5px;
   display: flex;
   border: 1px solid rgba(0, 0, 0, 0.1);
