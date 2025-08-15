@@ -1,9 +1,9 @@
 package com.behrad.estatehub.controller;
 
-import com.behrad.estatehub.entity.SellerProfile;
+import com.behrad.estatehub.entity.BuyerProfile;
 import com.behrad.estatehub.entity.Users;
 import com.behrad.estatehub.repository.UsersRepository;
-import com.behrad.estatehub.service.SellerProfileService;
+import com.behrad.estatehub.service.BuyerProfileService;
 import com.behrad.estatehub.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -23,16 +23,16 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Controller
-@RequestMapping("/seller-profile")
-public class SellerProfileController {
+@RequestMapping("/buyer-profile")
+@RequiredArgsConstructor
+public class BuyerProfileController {
 
     private final UsersRepository usersRepository;
-    private final SellerProfileService sellerProfileService;
+    private final BuyerProfileService buyerProfileService;
 
     @GetMapping("/")
-    public String sellerProfile(Model model) {
+    public String buyerProfile(Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -41,17 +41,15 @@ public class SellerProfileController {
 
             Users user = usersRepository.findByEmail(currentUsername)
                     .orElseThrow(() -> new UsernameNotFoundException("Could not found user with email: " + currentUsername));
+            Optional<BuyerProfile> buyerProfile = buyerProfileService.getOne(user.getUserId());
 
-            Optional<SellerProfile> sellerProfile = sellerProfileService.getOne(user.getUserId());
-
-            sellerProfile.ifPresent(profile -> model.addAttribute("profile", profile));
-
+            buyerProfile.ifPresent(profile -> model.addAttribute("profile", profile));
         }
-        return "seller_profile";
+        return "buyer-profile";
     }
 
-    @PostMapping("addNew")
-    public String addNew(SellerProfile sellerProfile, @RequestParam("image")MultipartFile multipartFile, Model model) {
+    @PostMapping("/addNew")
+    public String addNew(BuyerProfile buyerProfile, @RequestParam("image") MultipartFile multipartFile, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -61,19 +59,19 @@ public class SellerProfileController {
             Users users = usersRepository.findByEmail(currentUsername)
                     .orElseThrow(() -> new UsernameNotFoundException("Could not found user with email: " + currentUsername));
 
-            sellerProfile.setUserId(users);
-            sellerProfile.setUserAccountId(users.getUserId());
+            buyerProfile.setUserId(users);
+            buyerProfile.setUserAccountId(users.getUserId());
         }
-        model.addAttribute("profile", sellerProfile);
+        model.addAttribute("profile", buyerProfile);
 
         String fileName = "";
         if (!Objects.equals(multipartFile.getOriginalFilename(), "")) {
             fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-            sellerProfile.setProfilePhoto(fileName);
+            buyerProfile.setProfilePhoto(fileName);
         }
-        SellerProfile savedUser = sellerProfileService.addNew(sellerProfile);
+        BuyerProfile savedUser = buyerProfileService.addNew(buyerProfile);
 
-        String uploadDir = "photos/seller/" + savedUser.getUserAccountId();
+        String uploadDir = "photos/buyer/" + savedUser.getUserAccountId();
 
         try {
             FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);

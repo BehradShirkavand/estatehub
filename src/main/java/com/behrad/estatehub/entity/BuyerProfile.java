@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class BuyerProfile {
 
     @Id
-    private int userAccountId;
+    private Integer userAccountId;
 
     @OneToOne
     @JoinColumn(name = "user_account_id")
@@ -35,5 +35,14 @@ public class BuyerProfile {
 
     public BuyerProfile(Users users) {
         this.userId = users;
+    }
+
+    @Transient
+    public String getPhotosImagePath() {
+
+        if (profilePhoto == null || userAccountId == null) {
+            return null;
+        }
+        return "/photos/buyer/" + userAccountId + "/" + profilePhoto;
     }
 }
