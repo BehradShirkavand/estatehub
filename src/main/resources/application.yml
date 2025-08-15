@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: estatehub
+
+  datasource:
+    username: estatehub
+    password: estatehub
+    url: jdbc:mysql://localhost:3306/estatehub
