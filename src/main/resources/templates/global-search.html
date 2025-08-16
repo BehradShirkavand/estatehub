@@ -41,65 +41,33 @@
         <ul class="navbar-nav m-auto mt-2 mt-lg-0">
 
             <li class="nav-item active">
-                <a sec:authorize="hasAuthority('Buyer')" class="nav-link" th:href="@{/dashboard/}"
+                <a class="nav-link" th:href="@{/dashboard/}"
                 ><i class="fas fa-search"></i>Search for Properties</a
                 >
             </li>
             <li class="nav-item ">
-                <a sec:authorize="hasAuthority('Buyer')" class="nav-link" th:href="@{/saved-properties/}">
+                <a class="nav-link" th:href="@{/saved-properties/}">
                     <i class="fa-solid fa-eye"></i>View Saved Properties</a>
             </li>
             <li class="nav-item ">
-                <a sec:authorize="hasAuthority('Buyer')" class="nav-link" th:href="@{/buyer-profile/}">
+                <a class="nav-link" th:href="@{/buyer-profile/}">
                     <i class="fa-solid fa-pencil"></i>Edit Profile</a>
             </li>
 
-            <li class="nav-item ">
-                <a sec:authorize="hasAuthority('Seller')" class="nav-link" th:href="@{/dashboard/add}"
-                ><i class="fa-solid fa-file-circle-plus"></i>Post New Property</a
-                >
-            </li>
-            <li class="nav-item active">
-                <a sec:authorize="hasAuthority('Seller')" class="nav-link" th:href="@{/dashboard/}"
-                > <i class="fa-solid fa-eye"></i>View Your Properties</a
-                >
-            </li>
-            <li class="nav-item ">
-                <a sec:authorize="hasAuthority('Seller')" class="nav-link" th:href="@{/seller-profile/}"
-                > <i class="fa-solid fa-pencil"></i>Edit Account</a
-                >
-            </li>
 
         </ul>
 
-        <img
-                class="rounded-circle me-3"
-                height="50px"
-                width="50x"
-                th:if="${user.photosImagePath!=null}"
-                th:src="@{${user?.photosImagePath}}"
-        />
-
-        <label th:if="${user.firstName != null && user.lastName != null}"
-               th:text="${user.firstName+' '+user.lastName}"
-               class="nav-item nav-link px-2 me-3">
-        </label>
-
-        <label th:unless="${user.firstName != null && user.lastName != null}" th:text="${username}"
-               class="nav-item nav-link px-2 me-3"></label>
+        <label class="nav-item nav-link px-2 me-3">Guest</label>
 
         <button class="myBtn-light me-5" onclick="window.location.href='/logout'">Logout</button>
     </div>
 </header>
-
 <section class="section">
     <div class="sidenav px-5">
-        <div sec:authorize="hasAuthority('Buyer')">
-
+        <div>
             <label class="text-uppercase color-dull font-weight-bold">Filter Results</label>
             <hr/>
-            <form id="myForm" th:action="@{/dashboard/}">
-
+            <form id="myForm" th:action="@{/global-search/}">
                 <div class="row">
                     <div class="col-lg-12">
                         <label>Property Type</label>
@@ -240,6 +208,7 @@
                         </div>
                     </div>
                     <div class="col-lg-12">
+
                         <label>Date Posted</label>
                         <div class="form-check">
                             <input
@@ -282,10 +251,10 @@
             </form>
         </div>
     </div>
-    <article>
 
-        <div class="box" sec:authorize="hasAuthority('Buyer')">
-            <h1 class="primary-title">Buyer Dashboard</h1>
+    <article>
+        <div class="box">
+            <h1 class="primary-title">Dashboard</h1>
             <div class="inner">
                 <input id="property" class="radius-left" type="text" placeholder="Search for a property" name="property"
                        th:value="${property}"/>
@@ -293,63 +262,46 @@
                 <button class="radius-right" type="submit" form="myForm"><i class="fa fa-search"></i></button>
             </div>
         </div>
-        <div class="box" sec:authorize="hasAuthority('Seller')">
-            <h1 class="primary-title">Seller Dashboard</h1>
-        </div>
+
         <div class="box mt-3">
-            <label class="large-label px-3 mb-3" sec:authorize="hasAuthority('Buyer')">Search Results</label>
+            <label class="large-label px-3 mb-3">Search Results</label>
             <th:block th:each="propertyPost:${propertyPost}">
-                <a
-                        th:href="@{/property-details-apply/{id}(id=${propertyPost.propertyPostId})}"
-                        style="text-decoration: none; color: black"
-                >
-                    <div
-                            onclick="window.location=/property-details-apply/{id}(id=${propertyPost.propertyPostId})"
-                            class="property-row"
-                    >
-                        <div class="row">
+                <a th:href="@{/property-details-apply/{id}(id=${propertyPost.propertyPostId})}"
+                   style=" text-decoration:none; color:black;">
+                    <div onclick="window.location=/property-details-apply/{id}(id=${propertyPost.propertyPostId})" class="property-row">
+                        <div class="row ">
                             <div class="col-md-4">
                                 <label class="property-title text-left">
                                     [[${propertyPost.propertyTitle}]]
-                                    <span
-                                            class="title-span"
-                                            sec:authorize="hasAuthority('Seller')"
-                                            th:text="'('+ @{${propertyPost.totalCandidates}}+' Candidates Applied)'"
-                                    >(xx candidates applied)</span
-                                    >
-                                    <span
-                                            class="title-span"
-                                            sec:authorize="hasAuthority('Buyer')"
-                                            th:if="${propertyPost.isActive == true}"
-                                    >(Applied)</span
-                                    >
-                                    <span
-                                            class="title-span"
-                                            sec:authorize="hasAuthority('Buyer')"
-                                            th:if="${propertyPost.isSaved == true}"
-                                    >(Saved)</span
-                                    >
+                                    <span class="title-span" sec:authorize="hasAuthority('Seller')"
+                                          th:text="'('+ @{${propertyPost.totalCandidates}}+' Candidates Applied)'">(xx candidates applied)</span>
+                                    <span class="title-span" sec:authorize="hasAuthority('Buyer')"
+                                          th:if="${propertyPost.isActive == true}">(Applied)</span>
+                                    <span class="title-span" sec:authorize="hasAuthority('Buyer')"
+                                          th:if="${propertyPost.isSaved == true}">(Saved)</span>
+
                                 </label>
                             </div>
                             <div class="col-md-4 text-center">
-                                <label
-                                        th:text="${propertyPost.propertyLocationId.city+', '+ propertyPost.propertyLocationId.state}"
-                                >
-                                    City State</label
-                                >
+                                <label th:text="${propertyPost.propertyLocationId.city+', '+ propertyPost.propertyLocationId.state}">
+                                    City State</label>
                             </div>
                             <div class="col-md-4 text-right">
-                                <label th:text="@{${propertyPost.estateAgencyId.name}}"
-                                >Estate Agency Name</label
-                                >
+                                <label th:text="@{${propertyPost.estateAgencyId.name}}">Estate Agency Name</label>
                             </div>
                         </div>
                     </div>
                 </a>
             </th:block>
         </div>
+
     </article>
+
+
 </section>
+
+<!--/ bradcam_area  -->
+
 
 <script
         type="text/javascript"
@@ -357,10 +309,16 @@
 ></script>
 <script
         type="text/javascript"
+        th:src="@{/webjars/popper.js/umd/popper.min.js}"
+></script>
+<script
+        type="text/javascript"
         th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"
 ></script>
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
+
 <script>
+
     $('#property').change(function() {
       $('#hidProperty').val($(this).val());
     });

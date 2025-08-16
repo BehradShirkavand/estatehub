@@ -167,6 +167,93 @@ public class PropertyPostActivityController {
         return "dashboard";
     }
 
+    @GetMapping("global-search/")
+    public String globalSearch(
+            Model model,
+            @RequestParam(value = "property", required = false) String property,
+            @RequestParam(value = "location", required = false) String location,
+            @RequestParam(value = "apartment", required = false) String apartment,
+            @RequestParam(value = "villa", required = false) String villa,
+            @RequestParam(value = "land", required = false) String land,
+            @RequestParam(value = "shop", required = false) String shop,
+            @RequestParam(value = "office", required = false) String office,
+            @RequestParam(value = "farm", required = false) String farm,
+            @RequestParam(value = "house", required = false) String house,
+            @RequestParam(value = "warehouse", required = false) String warehouse,
+            @RequestParam(value = "sale", required = false) String sale,
+            @RequestParam(value = "rent", required = false) String rent,
+            @RequestParam(value = "today", required = false) boolean today,
+            @RequestParam(value = "day7", required = false) boolean day7,
+            @RequestParam(value = "day30", required = false) boolean day30) {
+
+
+        model.addAttribute("apartment", Objects.equals(apartment, "Apartment"));
+        model.addAttribute("villa", Objects.equals(villa, "Villa"));
+        model.addAttribute("land", Objects.equals(land, "Land"));
+        model.addAttribute("shop", Objects.equals(shop, "Shop"));
+        model.addAttribute("office", Objects.equals(office, "Office"));
+        model.addAttribute("farm", Objects.equals(farm, "Farm"));
+        model.addAttribute("house", Objects.equals(house, "House"));
+        model.addAttribute("warehouse", Objects.equals(warehouse, "Warehouse"));
+
+
+        model.addAttribute("sale", Objects.equals(sale, "Sale"));
+        model.addAttribute("rent", Objects.equals(rent, "Rent"));
+
+        model.addAttribute("today", today);
+        model.addAttribute("day7", day7);
+        model.addAttribute("day30", day30);
+
+        model.addAttribute("property", property);
+        model.addAttribute("location", location);
+
+
+        LocalDate searchDate = null;
+        List<PropertyPostActivity> propertyPost = null;
+        boolean dateSearchFlag = true;
+        boolean propertyType = true;
+        boolean listingType = true;
+
+        if (day30) {
+            searchDate = LocalDate.now().minusDays(30);
+        } else if (day7) {
+            searchDate = LocalDate.now().minusDays(7);
+        } else if (today){
+            searchDate = LocalDate.now();
+        } else {
+            dateSearchFlag = false;
+        }
+
+        if (apartment==null && villa==null && land==null && shop==null && office==null && farm==null && house==null && warehouse==null) {
+            apartment = "Apartment";
+            villa = "Villa";
+            land = "Land";
+            shop = "Shop";
+            office = "Office";
+            farm = "Farm";
+            house = "House";
+            warehouse = "Warehouse";
+            propertyType = false;
+        }
+
+        if (sale==null && rent==null) {
+            sale = "Sale";
+            rent = "Rent";
+            listingType = false;
+        }
+
+        if (!dateSearchFlag && !propertyType && !listingType && !StringUtils.hasText(property) && !StringUtils.hasText(location)) {
+            propertyPost = propertyPostActivityService.getAll();
+        } else {
+            propertyPost = propertyPostActivityService.search(property, location,
+                    Arrays.asList(apartment, villa, land, shop, office, farm, house, warehouse),
+                    Arrays.asList(sale, rent), searchDate);
+        }
+        model.addAttribute("propertyPost", propertyPost);
+        return "global-search";
+
+    }
+
     @GetMapping("/dashboard/add")
     public String addProperties(Model model) {
 
@@ -195,5 +282,4 @@ public class PropertyPostActivityController {
         model.addAttribute("user", usersService.getCurrentUserProfile());
         return "add-properties";
     }
-
 }
