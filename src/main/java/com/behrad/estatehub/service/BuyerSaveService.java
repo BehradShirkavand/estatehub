@@ -23,4 +23,7 @@ public class BuyerSaveService {
         return buyerSaveRepository.findByProperty(property);
     }
 
+    public void addNew(BuyerSave buyerSave) {
+        buyerSaveRepository.save(buyerSave);
+    }
 }

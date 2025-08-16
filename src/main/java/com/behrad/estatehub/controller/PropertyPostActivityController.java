@@ -1,10 +1,7 @@
 package com.behrad.estatehub.controller;
 
 import com.behrad.estatehub.entity.*;
-import com.behrad.estatehub.service.BuyerApplyService;
-import com.behrad.estatehub.service.BuyerSaveService;
-import com.behrad.estatehub.service.PropertyPostActivityService;
-import com.behrad.estatehub.service.UsersService;
+import com.behrad.estatehub.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,10 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,6 +26,7 @@ public class PropertyPostActivityController {
     private final PropertyPostActivityService propertyPostActivityService;
     private final BuyerApplyService buyerApplyService;
     private final BuyerSaveService buyerSaveService;
+    private final BuyerProfileService buyerProfileService;
 
     @GetMapping("/dashboard/")
     public String searchProperty(

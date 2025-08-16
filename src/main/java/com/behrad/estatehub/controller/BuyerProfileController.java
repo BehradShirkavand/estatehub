@@ -4,6 +4,7 @@ import com.behrad.estatehub.entity.BuyerProfile;
 import com.behrad.estatehub.entity.Users;
 import com.behrad.estatehub.repository.UsersRepository;
 import com.behrad.estatehub.service.BuyerProfileService;
+import com.behrad.estatehub.service.UsersService;
 import com.behrad.estatehub.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -13,10 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -28,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BuyerProfileController {
 
-    private final UsersRepository usersRepository;
+    private final UsersService usersService;
     private final BuyerProfileService buyerProfileService;
 
     @GetMapping("/")
@@ -39,8 +37,8 @@ public class BuyerProfileController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUsername = authentication.getName();
 
-            Users user = usersRepository.findByEmail(currentUsername)
-                    .orElseThrow(() -> new UsernameNotFoundException("Could not found user with email: " + currentUsername));
+            Users user = usersService.findByEmail(currentUsername);
+
             Optional<BuyerProfile> buyerProfile = buyerProfileService.getOne(user.getUserId());
 
             buyerProfile.ifPresent(profile -> model.addAttribute("profile", profile));
@@ -56,8 +54,7 @@ public class BuyerProfileController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUsername = authentication.getName();
 
-            Users users = usersRepository.findByEmail(currentUsername)
-                    .orElseThrow(() -> new UsernameNotFoundException("Could not found user with email: " + currentUsername));
+            Users users = usersService.findByEmail(currentUsername);
 
             buyerProfile.setUserId(users);
             buyerProfile.setUserAccountId(users.getUserId());
@@ -79,5 +76,15 @@ public class BuyerProfileController {
             throw new RuntimeException(e);
         }
         return "redirect:/dashboard/";
+    }
+
+    @GetMapping("/{id}")
+    public String showBuyerProfile(@PathVariable Integer id, Model model) {
+
+        BuyerProfile profile = buyerProfileService.getOne(id).orElse(new BuyerProfile());
+
+        model.addAttribute("profile", profile);
+
+        return "buyer-profile";
     }
 }

@@ -50,7 +50,7 @@
                     <i class="fa-solid fa-eye"></i>View Saved Properties</a>
             </li>
             <li class="nav-item ">
-                <a sec:authorize="hasAuthority('Buyer')" class="nav-link" th:href="@{buyer-profile/}">
+                <a sec:authorize="hasAuthority('Buyer')" class="nav-link" th:href="@{/buyer-profile/}">
                     <i class="fa-solid fa-pencil"></i>Edit Profile</a>
             </li>
 
@@ -89,7 +89,7 @@
     <!--    Side Bar Starts here    -->
     <div class="sidenav px-5">
         <div>
-            <hr/>
+<!--            <hr/>-->
         </div>
     </div>
     <article>
@@ -141,11 +141,12 @@
                     </div>
                     <div class="col-md-3 centerCandidate">
                         <div class="candidatesApplied">
-                            <label>Candidates Applied for Property</label>
+                            <label>Candidates Applied
+                                for Property: </label>
                             <th:block th:each="applyList:${applyList}">
                                 <a th:href="@{/buyer-profile/{id}(id=${applyList.userId.userAccountId})}"
                                    class="white"
-                                   th:text="${applyList.userId.firstName+', '+applyList.userId.lastName}">FirstName,
+                                   th:text="${applyList.userId.firstName+' '+applyList.userId.lastName}">FirstName
                                     LastName</a>
                             </th:block>
                         </div>

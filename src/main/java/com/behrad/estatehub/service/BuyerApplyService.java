@@ -23,4 +23,7 @@ public class BuyerApplyService {
         return buyerApplyRepository.findByProperty(property);
     }
 
+    public void addNew(BuyerApply buyerApply) {
+        buyerApplyRepository.save(buyerApply);
+    }
 }
