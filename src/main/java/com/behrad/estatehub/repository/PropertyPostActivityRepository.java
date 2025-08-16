@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PropertyPostActivityRepository extends JpaRepository<PropertyPostActivity, Integer> {
@@ -20,4 +21,33 @@ public interface PropertyPostActivityRepository extends JpaRepository<PropertyPo
             " where p.posted_by_id = :seller " +
             " GROUP By p.property_post_id" ,nativeQuery = true)
     List<ISellerProperties> getSellerProperties(@Param("seller") int seller);
+
+    @Query(value = "SELECT * FROM property_post_activity p INNER JOIN property_location l ON p.property_location_id = l.id WHERE p" +
+            ".property_title LIKE CONCAT('%', :property, '%')" +
+            " AND (l.city LIKE CONCAT('%', :location, '%')" +
+            " OR l.country LIKE CONCAT('%', :location, '%')" +
+            " OR l.state LIKE CONCAT('%', :location, '%'))" +
+            " AND (p.property_type IN(:propertyType))" +
+            " AND (p.listing_type IN(:listingType))", nativeQuery = true)
+    List<PropertyPostActivity> searchWithoutDate(
+            @Param("property") String property,
+            @Param("location") String location,
+            @Param("propertyType") List<String> propertyType,
+            @Param("listingType") List<String> listingType);
+
+    @Query(value = "SELECT * FROM property_post_activity p INNER JOIN property_location l ON p.property_location_id = l.id WHERE p" +
+            ".property_title LIKE CONCAT('%', :property, '%')" +
+            " AND (l.city LIKE CONCAT('%', :location, '%')" +
+            " OR l.country LIKE CONCAT('%', :location, '%')" +
+            " OR l.state LIKE CONCAT('%', :location, '%'))" +
+            " AND (p.property_type IN(:propertyType))" +
+            " AND (p.listing_type IN(:listingType))" +
+            " AND (p.posted_date >= :date)", nativeQuery = true)
+    List<PropertyPostActivity> search(
+            @Param("property") String property,
+            @Param("location") String location,
+            @Param("propertyType") List<String> propertyType,
+            @Param("listingType") List<String> listingType,
+            @Param("date") LocalDate searchDate);
+
 }

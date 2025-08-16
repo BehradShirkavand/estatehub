@@ -94,8 +94,205 @@
 
 <section class="section">
     <div class="sidenav px-5">
+        <div sec:authorize="hasAuthority('Buyer')">
+
+            <label class="text-uppercase color-dull font-weight-bold">Filter Results</label>
+            <hr/>
+            <form id="myForm" th:action="@{/dashboard/}">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label>Property Type</label>
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    th:checked="${apartment}"
+                                    id="Apartment"
+                                    name="apartment"
+                                    th:value="Apartment"
+                            />
+                            <label class="form-check-label" for="Apartment">
+                                Apartment
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="villa"
+                                    th:checked="${villa}"
+                                    name="villa"
+                                    th:value="Villa"
+                            />
+                            <label class="form-check-label" for="villa">
+                                Villa
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    id="land"
+                                    th:value="Land"
+                                    name="land"
+                                    th:checked="${land}"
+                            />
+                            <label class="form-check-label" for="land">
+                                Land
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="farm"
+                                    th:checked="${farm}"
+                                    name="farm"
+                                    th:value="Farm"
+                            />
+                            <label class="form-check-label" for="farm">
+                                Farm
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="office"
+                                    th:checked="${office}"
+                                    name="office"
+                                    th:value="Office"
+                            />
+                            <label class="form-check-label" for="office">
+                                Office
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="shop"
+                                    th:checked="${shop}"
+                                    name="shop"
+                                    th:value="Shop"
+                            />
+                            <label class="form-check-label" for="shop">
+                                Shop
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="house"
+                                    th:checked="${house}"
+                                    name="house"
+                                    th:value="House"
+                            />
+                            <label class="form-check-label" for="house">
+                                House
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="warehouse"
+                                    th:checked="${warehouse}"
+                                    name="warehouse"
+                                    th:value="Warehouse"
+                            />
+                            <label class="form-check-label" for="warehouse">
+                                Warehouse
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+
+                        <label>Listing Type</label>
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="sale"
+                                    th:value="Sale"
+                                    name="sale"
+                                    th:checked="${sale}"
+                            />
+                            <label class="form-check-label" for="sale">
+                                sale
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="Rent"
+                                    th:value="rent"
+                                    name="rent"
+                                    th:checked="${rent}"
+                            />
+                            <label class="form-check-label" for="Rent">
+                                Rent
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <label>Date Posted</label>
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="today"
+                                    name="today"
+                                    th:checked="${today}"
+                            />
+                            <label class="form-check-label" for="today"> Today </label>
+                        </div>
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="7days"
+                                    name="days7"
+                                    th:checked="${days7}"
+                            />
+                            <label class="form-check-label" for="7days">
+                                Last 7 Days
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="30days"
+                                    name="days30"
+                                    th:checked="${days30}"
+                            />
+                            <label class="form-check-label" for="30days">
+                                Last 30 Days
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <input id="hidProperty" name="property" th:value="${property}" hidden>
+                <input id="hidLoc" name="location" th:value="${location}" hidden>
+            </form>
+        </div>
     </div>
     <article>
+
+        <div class="box" sec:authorize="hasAuthority('Buyer')">
+            <h1 class="primary-title">Buyer Dashboard</h1>
+            <div class="inner">
+                <input id="property" class="radius-left" type="text" placeholder="Search for a property" name="property"
+                       th:value="${property}"/>
+                <input id="loc" class="" type="text" placeholder="Property Location" name="location" th:value="${location}"/>
+                <button class="radius-right" type="submit" form="myForm"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
         <div class="box" sec:authorize="hasAuthority('Seller')">
             <h1 class="primary-title">Seller Dashboard</h1>
         </div>
@@ -108,7 +305,7 @@
                 >
                     <div
                             onclick="window.location=/property-details-apply/{id}(id=${propertyPost.propertyPostId})"
-                            class="job-row"
+                            class="property-row"
                     >
                         <div class="row">
                             <div class="col-md-4">
@@ -162,5 +359,14 @@
         type="text/javascript"
         th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"
 ></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+<script>
+    $('#property').change(function() {
+      $('#hidproperty').val($(this).val());
+    });
+    $('#loc').change(function() {
+      $('#hidLoc').val($(this).val());
+    });
+</script>
 </body>
 </html>
