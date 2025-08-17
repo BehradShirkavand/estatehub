@@ -74,4 +74,8 @@ public class PropertyPostActivityService {
                 propertyPostActivityRepository
                         .search(property, location, propertyType, propertyType, searchDate);
     }
+
+    public void deleteById(int id) {
+        propertyPostActivityRepository.deleteById(id);
+    }
 }

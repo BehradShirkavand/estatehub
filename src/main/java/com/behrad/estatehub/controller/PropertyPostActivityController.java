@@ -282,4 +282,12 @@ public class PropertyPostActivityController {
         model.addAttribute("user", usersService.getCurrentUserProfile());
         return "add-properties";
     }
+
+    @PostMapping("dashboard/deleteProperty/{id}")
+    public String deleteProperty(@PathVariable("id") int id, Model model) {
+        PropertyPostActivity propertyPostActivity = propertyPostActivityService.getOne(id);
+        propertyPostActivityService.deleteById(id);
+        return "redirect:/dashboard/";
+
+    }
 }
