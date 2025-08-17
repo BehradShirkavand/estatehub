@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,11 +28,20 @@ public class UsersController {
     private final UsersTypeService usersTypeService;
 
     @GetMapping("/register")
-    public String register(Model model) {
+    public String register(@RequestParam(value = "role", required = false) String role, Model model) {
 
         List<UsersType> usersTypes = usersTypeService.getAll();
         model.addAttribute("getAllTypes", usersTypes);
-        model.addAttribute("user", new Users());
+
+        Users user =  new Users();
+
+        if (role != null) {
+            usersTypes.stream()
+                    .filter(t -> t.getUserTypeName().equalsIgnoreCase(role))
+                    .findFirst()
+                    .ifPresent(user::setUserTypeId);
+        }
+        model.addAttribute("user", user);
         return "register";
     }
 
