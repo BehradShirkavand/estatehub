@@ -285,7 +285,6 @@ public class PropertyPostActivityController {
 
     @PostMapping("dashboard/deleteProperty/{id}")
     public String deleteProperty(@PathVariable("id") int id, Model model) {
-        PropertyPostActivity propertyPostActivity = propertyPostActivityService.getOne(id);
         propertyPostActivityService.deleteById(id);
         return "redirect:/dashboard/";
 

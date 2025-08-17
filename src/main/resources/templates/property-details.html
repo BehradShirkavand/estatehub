@@ -135,20 +135,22 @@
 
             <div class="px-3 mb-3" sec:authorize="hasAuthority('Seller')">
                 <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <label class="large-label "> Property Description </label>
                         <div th:utext="${propertyDetails.descriptionOfProperty}"></div>
                     </div>
-                    <div class="col-md-5 centerCandidate">
+                    <div class="col-md-4 centerCandidate">
                         <div class="candidatesApplied">
-                            <label>Candidates Applied
-                                for Property: </label>
-                            <th:block th:each="applyList:${applyList}">
-                                <a th:href="@{/buyer-profile/{id}(id=${applyList.userId.userAccountId})}"
-                                   class="white"
-                                   th:text="${applyList.userId.firstName+' '+applyList.userId.lastName}">FirstName
-                                    LastName</a>
-                            </th:block>
+                            <label>Candidates Applied for Property: </label>
+                            <div class="col-md-6 candidatesApplied">
+                                <th:block th:each="applyList:${applyList}">
+                                    <a th:href="@{/buyer-profile/{id}(id=${applyList.userId.userAccountId})}"
+                                       class="white"
+                                       th:text="${applyList.userId.firstName+' '+applyList.userId.lastName}">FirstName
+                                        LastName</a>
+                                </th:block>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -157,24 +159,38 @@
             <div class="mt-3 px-3" sec:authorize="hasAuthority('Buyer')">
                 <div class="row">
                     <div class="col-md-3">
-                        <form th:action="@{/property-details/apply/{id}(id=${propertyDetails.propertyPostId})}" th:object="${applyProperty}"
-                              method="post">
-                            <button class="btn-sec btn-red w-100" type="submit" th:if="${alreadyApplied == false}">Apply
-                                Now
+                        <form th:object="${applyProperty}">
+                            <button class="btn-sec btn-red w-100"
+                                    type="submit"
+                                    formmethod="post"
+                                    th:if="${alreadyApplied == false}"
+                                    th:formaction="@{/property-details/apply/{id}(id=${propertyDetails.propertyPostId})}">
+                                Apply Now
                             </button>
-                            <button class="btn-sec btn-red w-100" disabled th:if="${alreadyApplied == true}">Already
-                                Applied
+                            <button class="btn-sec btn-red w-100"
+                                    type="submit"
+                                    formmethod="get"
+                                    th:if="${alreadyApplied == true}"
+                                    th:formaction="@{/property-details/delete-apply/{id}(id=${propertyDetails.propertyPostId})}">
+                                Delete Apply
                             </button>
                         </form>
                     </div>
                     <div class="col-md-3">
-                        <form th:action="@{/property-details/save/{id}(id=${propertyDetails.propertyPostId})}" th:object="${applyProperty}"
-                              method="post">
-                            <button class="btn-sec btn-black w-100" type="submit" th:if="${alreadySaved == false}">Save
-                                Property
+                        <form th:object="${applyProperty}">
+                            <button class="btn-sec btn-black w-100"
+                                    type="submit"
+                                    formmethod="post"
+                                    th:if="${alreadySaved == false}"
+                                    th:formaction="@{/property-details/save/{id}(id=${propertyDetails.propertyPostId})}">
+                                Save Property
                             </button>
-                            <button class="btn-sec btn-black w-100" disabled th:if="${alreadySaved == true}">Already
-                                Saved
+                            <button class="btn-sec btn-black w-100"
+                                    type="submit"
+                                    formmethod="get"
+                                    th:if="${alreadySaved == true}"
+                                    th:formaction="@{/property-details/delete-save/{id}(id=${propertyDetails.propertyPostId})}">
+                                Delete Save
                             </button>
                         </form>
                     </div>

@@ -50,21 +50,40 @@ public class BuyerSaveController {
             }
             buyerSaveService.addNew(buyerSave);
         }
-        return "redirect:/dashboard/";
+        return "redirect:/property-details-apply/{id}";
     }
 
     @GetMapping("saved-properties/")
     public String savedProperties(Model model) {
         List<PropertyPostActivity> propertyPost = new ArrayList<>();
-        Object currentUserProfile  = usersService.getCurrentUserProfile();
+        Object currentUserProfile = usersService.getCurrentUserProfile();
         List<BuyerSave> buyerSaveList = buyerSaveService.getCandidatesProperties((BuyerProfile) currentUserProfile);
 
-        for (BuyerSave buyerSave: buyerSaveList) {
+        for (BuyerSave buyerSave : buyerSaveList) {
             propertyPost.add(buyerSave.getProperty());
         }
         model.addAttribute("propertyPost", propertyPost);
         model.addAttribute("user", currentUserProfile);
 
         return "saved-properties";
+    }
+
+    @GetMapping("property-details/delete-save/{id}")
+    public String deleteSave(@PathVariable("id") int propertyId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUsername = authentication.getName();
+            Users user = usersService.findByEmail(currentUsername);
+            Optional<BuyerProfile> buyerProfile = buyerProfileService.getOne(user.getUserId());
+            PropertyPostActivity propertyPostActivity = propertyPostActivityService.getOne(propertyId);
+
+            if (buyerProfile.isPresent() && propertyPostActivity != null) {
+                buyerSaveService.deleteByUserByProperty(user.getUserId(), propertyPostActivity);
+            } else {
+                throw new RuntimeException("User or Property not found");
+            }
+        }
+        return "redirect:/property-details-apply/{id}";
     }
 }

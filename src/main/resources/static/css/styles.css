@@ -417,8 +417,14 @@ div.centerCandidate {
   line-height: 0.75;
 }
 .candidatesApplied > label {
-  margin-bottom: 20px;
+  display: inline-block;
+  margin-bottom: 10px;
   font-weight: 700;
+}
+
+.candidatesApplied > a {
+  display: inline-block;
+  margin-bottom: 10px
 }
 
 mr-1 {

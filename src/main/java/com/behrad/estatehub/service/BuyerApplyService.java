@@ -26,4 +26,14 @@ public class BuyerApplyService {
     public void addNew(BuyerApply buyerApply) {
         buyerApplyRepository.save(buyerApply);
     }
+
+    public void deleteByUserByProperty(int userId, PropertyPostActivity propertyPostActivity) {
+        List<BuyerApply> buyerApplyList = buyerApplyRepository.findByProperty(propertyPostActivity);
+
+        for (BuyerApply buyerApply:buyerApplyList) {
+            if (buyerApply.getUserId().getUserAccountId() == userId) {
+                buyerApplyRepository.delete(buyerApply);
+            }
+        }
+    }
 }

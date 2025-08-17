@@ -98,7 +98,25 @@ public class BuyerApplyController {
             }
             buyerApplyService.addNew(buyerApply);
         }
-        return "redirect:/dashboard/";
+        return "redirect:/property-details-apply/{id}";
+    }
 
+    @GetMapping("property-details/delete-apply/{id}")
+    public String deleteApply(@PathVariable("id") int propertyId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUsername = authentication.getName();
+            Users user = usersService.findByEmail(currentUsername);
+            Optional<BuyerProfile> buyerProfile = buyerProfileService.getOne(user.getUserId());
+            PropertyPostActivity propertyPostActivity = propertyPostActivityService.getOne(propertyId);
+
+            if (buyerProfile.isPresent() && propertyPostActivity != null) {
+                buyerApplyService.deleteByUserByProperty(user.getUserId(), propertyPostActivity);
+            } else {
+                throw new RuntimeException("User or Property not found");
+            }
+        }
+        return "redirect:/property-details-apply/{id}";
     }
 }
