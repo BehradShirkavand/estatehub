@@ -87,4 +87,12 @@ public class UsersService {
     public Users findById(int id) {
         return usersRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Could not found user with id: " + id));
     }
+
+    public boolean existsByEmail(String email) {
+        return usersRepository.existsByEmail(email);
+    }
+
+    public void save(Users user) {
+        usersRepository.save(user);
+    }
 }

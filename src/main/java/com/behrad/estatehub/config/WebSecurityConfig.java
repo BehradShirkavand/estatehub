@@ -37,7 +37,9 @@ public class WebSecurityConfig {
             "/fonts**",
             "/favicon.ico",
             "/resources/**",
-            "/error"
+            "/error",
+            "/forgot-password/**",
+            "/reset-password/**"
     };
 
     @Bean
