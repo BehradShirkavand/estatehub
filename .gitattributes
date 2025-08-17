@@ -1,2 +1,14 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
+
+# Force Java as main language
+*.java linguist-language=Java
+
+# Treat frontend files as documentation (reduces their weight in stats)
+*.html linguist-documentation
+*.css  linguist-documentation
+*.js   linguist-documentation
+
+# Optional: ignore node_modules completely if exists
+/node_modules/* linguist-vendored
+
