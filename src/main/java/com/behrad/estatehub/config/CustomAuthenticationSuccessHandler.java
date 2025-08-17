@@ -16,10 +16,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-
-        String username = userDetails.getUsername();
         boolean hasBuyerRole = authentication.getAuthorities()
                 .stream()
                 .anyMatch(r -> r.getAuthority().equals("Buyer"));
@@ -30,6 +26,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         if (hasBuyerRole || hasSellerRole) {
             response.sendRedirect("/dashboard/");
+        } else {
+            response.sendRedirect("/");
         }
 
     }

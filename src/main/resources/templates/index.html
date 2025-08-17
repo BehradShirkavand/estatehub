@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Login EstateHub</title>
@@ -9,6 +9,12 @@
     <meta charset="ISO-8859-1">
 </head>
 <body class="background">
+<div sec:authorize="isAuthenticated()">
+    <script th:inline="javascript">
+        window.location.replace("/dashboard/");
+    </script>
+</div>
+
 <nav class="main_div">
     <div class="logo_left">
         <label class="logo">

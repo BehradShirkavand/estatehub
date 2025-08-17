@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
   <head>
     <link
       rel="stylesheet"
@@ -29,6 +29,11 @@
   </head>
 
   <body>
+  <div sec:authorize="isAuthenticated()">
+      <script th:inline="javascript">
+          window.location.replace("/dashboard/");
+      </script>
+  </div>
 
     <div class="row" style="margin-right:0">
       <div class="col-md-6">
@@ -64,7 +69,7 @@
             </div>
             <div class="clearfix mb-4">
               <label class="float-left form-check-label"
-                ><input type="checkbox" /> Remember me</label
+                ><input type="checkbox" name="remember-me"/> Remember me</label
               >
               <a href="#" class="color-text float-right">Forgot Password?</a>
             </div>

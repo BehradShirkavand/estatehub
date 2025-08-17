@@ -1,7 +1,6 @@
 package com.behrad.estatehub.config;
 
 import com.behrad.estatehub.service.CustomUserDetailsService;
-import com.behrad.estatehub.util.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,11 +52,19 @@ public class WebSecurityConfig {
 
         http.formLogin(form -> form.loginPage("/login").permitAll()
                 .successHandler(customAuthenticationSuccessHandler)).logout(logout -> {
-                    logout.logoutUrl("/logout");
-                    logout.logoutSuccessUrl("/");
+                    logout.logoutUrl("/logout")
+                    .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "remember-me");
                 })
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
+
+        http.rememberMe(remember -> remember
+                .key("uniqueAndSecretKey")
+                .tokenValiditySeconds(7 * 24 * 60 * 60) // 7 days
+                .rememberMeParameter("remember-me")
+        );
 
         return http.build();
     }
