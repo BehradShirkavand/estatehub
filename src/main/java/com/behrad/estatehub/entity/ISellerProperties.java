@@ -8,6 +8,8 @@ public interface ISellerProperties {
 
     String getProperty_title();
 
+    String getProperty_photo();
+
     int getLocationId();
 
     String getCity();

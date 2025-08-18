@@ -11,7 +11,9 @@ import java.util.List;
 
 public interface PropertyPostActivityRepository extends JpaRepository<PropertyPostActivity, Integer> {
 
-    @Query(value = " SELECT COUNT(s.user_id) as totalCandidates,p.property_post_id,p.property_title,l.id as locationId,l.city,l.state,l.country,e.id as agencyId,e.name FROM property_post_activity p " +
+    @Query(value = " SELECT COUNT(s.user_id) as totalCandidates, p.property_post_id, p.property_title, " +
+            " p.property_photo as property_photo, " +
+            " l.id as locationId, l.city, l.state, l.country, e.id as agencyId, e.name FROM property_post_activity p " +
             " inner join property_location l " +
             " on p.property_location_id = l.id " +
             " INNER join estate_agency e  " +
@@ -19,7 +21,7 @@ public interface PropertyPostActivityRepository extends JpaRepository<PropertyPo
             " left join buyer_apply s " +
             " on s.property = p.property_post_id " +
             " where p.posted_by_id = :seller " +
-            " GROUP By p.property_post_id" ,nativeQuery = true)
+            " GROUP By p.property_post_id, p.property_photo" ,nativeQuery = true)
     List<ISellerProperties> getSellerProperties(@Param("seller") int seller);
 
     @Query(value = "SELECT * FROM property_post_activity p INNER JOIN property_location l ON p.property_location_id = l.id WHERE p" +

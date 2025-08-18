@@ -396,7 +396,7 @@ a.color-text:hover {
   background: #fb4f14;
 }
 .btn-sec.btn-black {
-  background: #191d34;
+  background: #002244;
 }
 span.title-span {
   font-size: 14px;
@@ -407,24 +407,25 @@ div.centerCandidate {
   align-items: center;
   justify-content: center;
 }
-.candidatesApplied {
+
+.card.custom-card {
   font-family: 'Montserrat';
   font-style: normal;
-  padding: 15px;
   background-color: #002244;
   color: white;
   border-radius: 10px;
-  line-height: 0.75;
-}
-.candidatesApplied > label {
-  display: inline-block;
-  margin-bottom: 10px;
-  font-weight: 700;
+  border: 1px solid #003366;
+  padding: 5px;
 }
 
-.candidatesApplied > a {
-  display: inline-block;
-  margin-bottom: 10px
+.custom-card a {
+  color: white;
+  text-decoration: none;
+}
+
+.custom-card a:hover {
+  color: #ffffff;
+  text-decoration: underline;
 }
 
 mr-1 {

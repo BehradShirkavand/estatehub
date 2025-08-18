@@ -2,6 +2,7 @@ package com.behrad.estatehub.controller;
 
 import com.behrad.estatehub.entity.*;
 import com.behrad.estatehub.service.*;
+import com.behrad.estatehub.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -124,6 +127,8 @@ public class PropertyPostActivityController {
                         ((SellerProfile) currentUserProfile).getUserAccountId()
                 );
                 model.addAttribute("propertyPost", sellerProperties);
+                System.out.println("=========================================================================");
+                System.out.println(sellerProperties);
             } else {
                 List<BuyerApply> buyerApplyList = buyerApplyService.getCandidatesProperties((BuyerProfile) currentUserProfile);
                 List<BuyerSave> buyerSaveList = buyerSaveService.getCandidatesProperties((BuyerProfile) currentUserProfile);
@@ -263,15 +268,30 @@ public class PropertyPostActivityController {
     }
 
     @PostMapping("/dashboard/addNew")
-    public String addNew(PropertyPostActivity propertyPostActivity, Model model) {
+    public String addNew(PropertyPostActivity propertyPostActivity, @RequestParam("image") MultipartFile multipartFile, Model model) {
         Users user = usersService.getCurrentUser();
 
         if (user != null) {
             propertyPostActivity.setPostedById(user);
         }
+
+        String fileName = "";
+        if (!Objects.equals(multipartFile.getOriginalFilename(), "")) {
+            fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+            propertyPostActivity.setPropertyPhoto(fileName);
+        }
         propertyPostActivity.setPostedDate(new Date());
-        model.addAttribute("propertyPostActivity", propertyPostActivity);
-        propertyPostActivityService.addNew(propertyPostActivity);
+        PropertyPostActivity savedProperty = propertyPostActivityService.addNew(propertyPostActivity);
+
+        String uploadDir = "photos/property/" + savedProperty.getPropertyPostId();
+
+        try {
+            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        model.addAttribute("propertyPost", savedProperty);
         return "redirect:/dashboard/";
     }
 

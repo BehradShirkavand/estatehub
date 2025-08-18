@@ -42,6 +42,7 @@ public class PropertyPostActivityService {
                     sel.getTotalCandidates(),
                     sel.getProperty_post_id(),
                     sel.getProperty_title(),
+                    sel.getProperty_photo(),
                     loc,
                     est)
             );

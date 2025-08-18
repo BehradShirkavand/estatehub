@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="col-md-7 container myForm">
-        <form id="property-main-form" th:action="@{/dashboard/addNew}" th:object="${propertyPostActivity}" method="post" class="property-add-form">
+        <form id="property-main-form" th:action="@{/dashboard/addNew}" th:object="${propertyPostActivity}" method="post" enctype="multipart/form-data" class="property-add-form">
             <input hidden type="text" th:field="*{propertyPostId}" >
             <input hidden type="text" th:field="*{propertyLocationId.Id}" >
             <input hidden type="text" th:field="*{estateAgencyId.Id}" >
@@ -90,6 +90,14 @@
                 <div class="col-lg-12 form-group">
                     <label class="mt-2 heading_font font_sub_heading_color">Estate Agency</label>
                     <input id="agencyName" th:field="*{estateAgencyId.name}" type="text" class="form-control" placeholder="Estate Agency Name">
+                </div>
+            </div>
+            <label class="heading_font font_sub_heading_color mt-2">Property Photo</label>
+            <div class="row" >
+
+                <div class="col" >
+                    <input type="file" name="image" class="form-control" accept="image/png, image/jpeg" />
+                    <input type="text" name="propertyPhoto" th:field="*{propertyPhoto}" class="form-control" hidden />
                 </div>
             </div>
 
