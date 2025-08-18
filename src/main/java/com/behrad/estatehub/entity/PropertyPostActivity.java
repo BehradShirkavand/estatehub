@@ -57,8 +57,8 @@ public class PropertyPostActivity {
     @Transient
     public String getPhotosImagePath() {
 
-        if (propertyPhoto == null || propertyPostId ==null) {
-            return null;
+        if (propertyPhoto == null || propertyPostId ==null || propertyPhoto.isEmpty()) {
+            return "/images/default-image-property.png";
         }
         return "/photos/property/" + propertyPostId + "/" + propertyPhoto;
     }

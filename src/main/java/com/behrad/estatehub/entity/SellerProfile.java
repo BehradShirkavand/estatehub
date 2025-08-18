@@ -42,8 +42,8 @@ public class SellerProfile {
     @Transient
     public String getPhotosImagePath() {
 
-        if (profilePhoto == null || userAccountId ==null) {
-            return null;
+        if (profilePhoto == null || userAccountId ==null || profilePhoto.isEmpty()) {
+            return "/images/default-image-profile.png";
         }
         return "/photos/seller/" + userAccountId + "/" + profilePhoto;
     }

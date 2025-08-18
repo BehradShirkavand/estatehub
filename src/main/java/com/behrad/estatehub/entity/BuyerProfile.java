@@ -40,8 +40,8 @@ public class BuyerProfile {
     @Transient
     public String getPhotosImagePath() {
 
-        if (profilePhoto == null || userAccountId == null) {
-            return null;
+        if (profilePhoto == null || userAccountId == null || profilePhoto.isEmpty()) {
+            return "/images/default-image-profile.png";
         }
         return "/photos/buyer/" + userAccountId + "/" + profilePhoto;
     }
