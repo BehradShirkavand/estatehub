@@ -3,18 +3,18 @@ package com.behrad.estatehub.controller;
 import com.behrad.estatehub.entity.*;
 import com.behrad.estatehub.service.*;
 import com.behrad.estatehub.util.FileUploadUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -113,7 +113,6 @@ public class PropertyPostActivityController {
                     Arrays.asList(sale, rent), searchDate);
         }
 
-
         Object currentUserProfile = usersService.getCurrentUserProfile();
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -127,8 +126,7 @@ public class PropertyPostActivityController {
                         ((SellerProfile) currentUserProfile).getUserAccountId()
                 );
                 model.addAttribute("propertyPost", sellerProperties);
-                System.out.println("=========================================================================");
-                System.out.println(sellerProperties);
+
             } else {
                 List<BuyerApply> buyerApplyList = buyerApplyService.getCandidatesProperties((BuyerProfile) currentUserProfile);
                 List<BuyerSave> buyerSaveList = buyerSaveService.getCandidatesProperties((BuyerProfile) currentUserProfile);
@@ -268,11 +266,23 @@ public class PropertyPostActivityController {
     }
 
     @PostMapping("/dashboard/addNew")
-    public String addNew(PropertyPostActivity propertyPostActivity, @RequestParam("image") MultipartFile multipartFile, Model model) {
+    public String addNew(
+            @Valid
+            @ModelAttribute("propertyPostActivity") PropertyPostActivity propertyPostActivity,
+            BindingResult bindingResult,
+            @RequestParam("image") MultipartFile multipartFile,
+            Model model)
+    {
         Users user = usersService.getCurrentUser();
+
+        if (bindingResult.hasErrors()) {
+            return "add-properties";
+        }
 
         if (user != null) {
             propertyPostActivity.setPostedById(user);
+        } else {
+            throw new UsernameNotFoundException("User not found");
         }
 
         String fileName = "";
@@ -280,11 +290,10 @@ public class PropertyPostActivityController {
             fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
             propertyPostActivity.setPropertyPhoto(fileName);
         }
-        propertyPostActivity.setPostedDate(new Date());
+
         PropertyPostActivity savedProperty = propertyPostActivityService.addNew(propertyPostActivity);
 
         String uploadDir = "photos/property/" + savedProperty.getPropertyPostId();
-
         try {
             FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         } catch (IOException e) {
@@ -295,7 +304,7 @@ public class PropertyPostActivityController {
         return "redirect:/dashboard/";
     }
 
-    @PostMapping("dashboard/edit/{id}")
+    @GetMapping("dashboard/edit/{id}")
     public String editProperty(@PathVariable("id") int id, Model model) {
         PropertyPostActivity propertyPostActivity = propertyPostActivityService.getOne(id);
         model.addAttribute("propertyPostActivity", propertyPostActivity);

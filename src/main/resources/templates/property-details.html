@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" style="height: 100%">
 <head>
     <meta charset="UTF-8"/>
-    <title>Candidate Dashboard</title>
+    <title>Dashboard</title>
     <meta charset="utf-8"/>
     <meta http-equiv="x-ua-compatible" content="ie=edge"/>
     <meta name="description" content=""/>
@@ -129,7 +129,7 @@
                 <div class="row ">
                     <div class="col-md-3">
                         <label class="text-left">Date Posted:<span
-                                th:text="${propertyDetails.postedDate}"></span></label>
+                                th:text="${propertyDetails.createdAt}"></span></label>
                     </div>
                     <div class="col-md-3 text-center">
                         <label> Price: <span th:text="${propertyDetails.price}"></span> $</label>
@@ -158,7 +158,7 @@
                     <div class="col-md-4 mb-3" sec:authorize="hasAuthority('Seller')">
                         <div class="card h-100 custom-card">
                             <div class="card-body">
-                                <h5 class="card-title">Candidates Applied</h5>
+                                <h5 class="card-title">Buyers Applied</h5>
                                 <hr>
                                 <div th:if="${not #lists.isEmpty(applyList)}">
                                     <ul class="list-unstyled">
@@ -222,7 +222,7 @@
             <div class="mt-3 px-3" sec:authorize="hasAuthority('Seller')">
                 <div class="row justify-content-center">
                     <div class="col-md-3">
-                        <form th:action="@{/dashboard/edit/{id}(id=${propertyDetails.propertyPostId})}" method="post" enctype="multipart/form-data">
+                        <form th:action="@{/dashboard/edit/{id}(id=${propertyDetails.propertyPostId})}" method="get" enctype="multipart/form-data">
                             <button class="btn-sec btn-black w-100" type="submit">Edit Property</button>
                         </form>
                     </div>

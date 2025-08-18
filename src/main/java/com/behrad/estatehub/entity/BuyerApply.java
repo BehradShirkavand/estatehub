@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -30,6 +31,8 @@ public class BuyerApply implements Serializable {
     @JoinColumn(name = "property", referencedColumnName = "propertyPostId")
     private PropertyPostActivity property;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @CreationTimestamp
+    @Column(updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date applyDate;
 }

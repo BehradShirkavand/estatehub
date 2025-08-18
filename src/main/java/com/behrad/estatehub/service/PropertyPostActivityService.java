@@ -62,13 +62,6 @@ public class PropertyPostActivityService {
 
     public List<PropertyPostActivity> search(String property, String location, List<String> propertyType, List<String> listingType, LocalDate searchDate) {
 
-//        List<String> cleanPropertyType = propertyType.stream()
-//                .filter(Objects::nonNull) // Remove all null elements
-//                .toList();
-//        List<String> cleanListingType = listingType.stream()
-//                .filter(Objects::nonNull) // Remove all null elements
-//                .toList();
-
         return Objects.isNull(searchDate)?
                 propertyPostActivityRepository
                         .searchWithoutDate(property, location, propertyType, listingType) :

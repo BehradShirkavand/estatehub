@@ -50,7 +50,7 @@ public class BuyerSaveController {
             }
             buyerSaveService.addNew(buyerSave);
         }
-        return "redirect:/property-details-apply/{id}";
+        return "redirect:/saved-properties/";
     }
 
     @GetMapping("saved-properties/")
@@ -84,6 +84,6 @@ public class BuyerSaveController {
                 throw new RuntimeException("User or Property not found");
             }
         }
-        return "redirect:/property-details-apply/{id}";
+        return "redirect:/dashboard/";
     }
 }

@@ -92,13 +92,12 @@ public class BuyerApplyController {
                 buyerApply = new BuyerApply();
                 buyerApply.setUserId(buyerProfile.get());
                 buyerApply.setProperty(propertyPostActivity);
-                buyerApply.setApplyDate(new Date());
             } else {
                 throw new RuntimeException("User not found");
             }
             buyerApplyService.addNew(buyerApply);
         }
-        return "redirect:/property-details-apply/{id}";
+        return "redirect:/dashboard/";
     }
 
     @GetMapping("property-details/delete-apply/{id}")
@@ -117,6 +116,6 @@ public class BuyerApplyController {
                 throw new RuntimeException("User or Property not found");
             }
         }
-        return "redirect:/property-details-apply/{id}";
+        return "redirect:/dashboard/";
     }
 }

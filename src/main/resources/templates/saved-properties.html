@@ -72,8 +72,6 @@
 <section class="section">
     <div class="sidenav px-5">
         <div sec:authorize="hasAuthority('Buyer')">
-            <hr/>
-
         </div>
     </div>
 
@@ -84,34 +82,38 @@
         </div>
 
         <div class="box mt-3">
-            <label class="large-label px-3 mb-3">Results</label>
+            <label class="large-label px-3 mb-3" sec:authorize="hasAuthority('Buyer')">Search Results</label>
             <th:block th:each="propertyPost:${propertyPost}">
                 <a th:href="@{/property-details-apply/{id}(id=${propertyPost.propertyPostId})}"
-                   style=" text-decoration:none; color:black;">
-                    <div onclick="window.location=/property-details-apply/{id}(id=${propertyPost.propertyPostId})" class="property-row">
+                   style="text-decoration: none; color: black">
+                    <div class="property-row">
                         <div class="row align-items-center">
-                            <div class="col-md-4 d-flex align-items-center">
-                                <div style="width: 150px; height: 150px; margin-right: 10px;">
-                                    <img th:if="${propertyPost.photosImagePath != null}"
-                                         th:src="@{${propertyPost.photosImagePath}}"
-                                         alt="Property Image"
-                                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;">
-                                </div>
+
+                            <div class="col-md-3">
                                 <label class="property-title text-left">
                                     [[${propertyPost.propertyTitle}]]
-                                    <span class="title-span" sec:authorize="hasAuthority('Seller')"
-                                          th:text="'('+ @{${propertyPost.totalCandidates}}+' Candidates Applied)'">(xx candidates applied)</span>
-                                    <span class="title-span" sec:authorize="hasAuthority('Buyer')"
-                                          th:if="${propertyPost.isActive == true}">(Applied)</span>
-
                                 </label>
                             </div>
-                            <div class="col-md-4 text-center">
+
+                            <div class="col-md-3 text-center">
                                 <label th:text="${propertyPost.propertyLocationId.city+', '+ propertyPost.propertyLocationId.state}">
-                                    City State</label>
+                                    City State
+                                </label>
                             </div>
-                            <div class="col-md-4 text-right">
-                                <label th:text="@{${propertyPost.estateAgencyId.name}}">Estate Agency Name</label>
+
+                            <div class="col-md-3 text-center">
+                                <label th:text="@{${propertyPost.estateAgencyId.name}}">
+                                    Estate Agency Name
+                                </label>
+                            </div>
+
+                            <div class="col-md-3 text-end">
+                                <img th:if="${propertyPost.photosImagePath != null}"
+                                     th:src="@{${propertyPost.photosImagePath}}"
+                                     alt="Property Image"
+                                     class="img-fluid"
+                                     style="height: 120px; width: 150px; border-radius: 5px; object-fit: cover;"
+                                >
                             </div>
                         </div>
                     </div>

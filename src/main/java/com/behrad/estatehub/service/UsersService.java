@@ -30,7 +30,6 @@ public class UsersService {
 
     public Users addNew(Users users) {
         users.setActive(true);
-        users.setRegistrationDate(new Date(System.currentTimeMillis()));
         users.setPassword(passwordEncoder.encode(users.getPassword()));
         Users savedUser = usersRepository.save(users);
 

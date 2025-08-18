@@ -59,7 +59,7 @@
 
         <label class="nav-item nav-link px-2 me-3">Guest</label>
 
-        <button class="myBtn-light me-5" onclick="window.location.href='/logout'">Logout</button>
+        <button class="myBtn-light me-5" onclick="window.location.href='/login'">Login</button>
     </div>
 </header>
 <section class="section">
@@ -267,42 +267,41 @@
             <label class="large-label px-3 mb-3">Search Results</label>
             <th:block th:each="propertyPost:${propertyPost}">
                 <a th:href="@{/property-details-apply/{id}(id=${propertyPost.propertyPostId})}"
-                   style=" text-decoration:none; color:black;">
+                   style="text-decoration:none; color:black;">
                     <div onclick="window.location=/property-details-apply/{id}(id=${propertyPost.propertyPostId})" class="property-row">
                         <div class="row ">
-                            <div class="col-md-4">
-                                <label class="property-title text-left">
-                                    [[${propertyPost.propertyTitle}]]
-                                    <span class="title-span" sec:authorize="hasAuthority('Seller')"
-                                          th:text="'('+ @{${propertyPost.totalCandidates}}+' Candidates Applied)'">(xx candidates applied)</span>
-                                    <span class="title-span" sec:authorize="hasAuthority('Buyer')"
-                                          th:if="${propertyPost.isActive == true}">(Applied)</span>
-                                    <span class="title-span" sec:authorize="hasAuthority('Buyer')"
-                                          th:if="${propertyPost.isSaved == true}">(Saved)</span>
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <label class="property-title text-left">
+                                        [[${propertyPost.propertyTitle}]]
+                                    </label>
 
-                                </label>
-                            </div>
-                            <div class="col-md-4 text-center">
-                                <label th:text="${propertyPost.propertyLocationId.city+', '+ propertyPost.propertyLocationId.state}">
-                                    City State</label>
-                            </div>
-                            <div class="col-md-4 text-right">
-                                <label th:text="@{${propertyPost.estateAgencyId.name}}">Estate Agency Name</label>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <label th:text="${propertyPost.propertyLocationId.city+', '+ propertyPost.propertyLocationId.state}">
+                                        City State</label>
+                                </div>
+                                <div class="col-md-3 text-right">
+                                    <label th:text="@{${propertyPost.estateAgencyId.name}}">Estate Agency Name</label>
+                                </div>
+
+                                <div class="col-md-3 text-end">
+                                    <img th:if="${propertyPost.photosImagePath != null}"
+                                         th:src="@{${propertyPost.photosImagePath}}"
+                                         alt="Property Image"
+                                         class="img-fluid"
+                                         style="height: 120px; width: 150px; border-radius: 5px; object-fit: cover;">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </a>
             </th:block>
         </div>
-
     </article>
-
-
 </section>
 
 <!--/ bradcam_area  -->
-
-
 <script
         type="text/javascript"
         th:src="@{/webjars/jquery/jquery.min.js}"
@@ -318,7 +317,6 @@
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
 
 <script>
-
     $('#property').change(function() {
       $('#hidProperty').val($(this).val());
     });

@@ -13,7 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -32,7 +34,6 @@ public class UsersController {
 
         List<UsersType> usersTypes = usersTypeService.getAll();
         model.addAttribute("getAllTypes", usersTypes);
-
         Users user =  new Users();
 
         if (role != null) {
@@ -46,19 +47,22 @@ public class UsersController {
     }
 
     @PostMapping("/register/new")
-    public String userRegistration(@Valid Users users, Model model) {
+    public String userRegistration(@Valid @ModelAttribute("user") Users users, BindingResult bindingResult, Model model) {
 
         Optional<Users> optionalUsers = usersService.getUserByEmail(users.getEmail());
 
         if (optionalUsers.isPresent()){
-            model.addAttribute(
-                    "error",
-                    "Email already taken, try to login or register with other email.");
+            bindingResult.rejectValue(
+                    "email",
+                    "duplicate.email");
+        }
+
+        if (bindingResult.hasErrors()) {
             List<UsersType> usersTypes = usersTypeService.getAll();
             model.addAttribute("getAllTypes", usersTypes);
-            model.addAttribute("user", new Users());
             return "register";
         }
+
         usersService.addNew(users);
         return "redirect:/dashboard/";
     }

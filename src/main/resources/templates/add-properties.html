@@ -37,13 +37,15 @@
             <label class="heading_font font_sub_heading_color">Property Details</label>
             <div class="row" >
                 <div class="col-lg-12 form-group">
+                    <div th:if="${#fields.hasErrors('propertyTitle')}" th:errors="*{propertyTitle}" class="alert alert-danger small mt-1"></div>
                     <input id="title" type="text" th:field="*{propertyTitle}" class="form-control" placeholder="Property Title">
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-4 form-group">
-                    <select id="type" th:field="*{propertyType}" class="form-control">
+                    <div th:if="${#fields.hasErrors('propertyType')}" th:errors="*{propertyType}" class="alert alert-danger small mt-1"></div>
+                    <select id="type" th:field="*{propertyType}" class="form-control" required>
                         <option value="" >Property Type</option>
                         <option th:value="Apartment" >Apartment</option>
                         <option th:value="Villa" >Villa</option>
@@ -56,18 +58,22 @@
                     </select>
                 </div>
                 <div class="col-md-4 form-group">
-                    <select id="remote" th:field="*{listingType}" class="form-control">
+                    <div th:if="${#fields.hasErrors('listingType')}" th:errors="*{listingType}" class="alert alert-danger small mt-1"></div>
+
+                    <select id="remote" th:field="*{listingType}" class="form-control" required>
                         <option value="">Listing Type</option>
                         <option th:value="Sale">For Sale</option>
                         <option th:value="Rent">For Rent</option>
                     </select>
                 </div>
                 <div class="col-md-4 form-group">
-                    <input id="price" th:field="*{price}" type="text" class="form-control" placeholder="Price">
+                    <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="alert alert-danger small mt-1"></div>
+                    <input id="price" th:field="*{price}" type="number" class="form-control" placeholder="Price">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
+                    <div th:if="${#fields.hasErrors('descriptionOfProperty')}" th:errors="*{descriptionOfProperty}" class="alert alert-danger small mt-1"></div>
                     <label class="mt-2 heading_font font_sub_heading_color">Description</label>
                     <textarea type="text" rows="4" id="content" placeholder="Content" class="form-control"
                               th:field="*{descriptionOfProperty}" autocomplete="off"></textarea>
@@ -77,18 +83,22 @@
             <label class="mt-2 heading_font font_sub_heading_color">Location</label>
             <div class="row" >
                 <div class="col-md-4 form-group">
+                    <div th:if="${#fields.hasErrors('propertyLocationId.city')}" th:errors="*{propertyLocationId.city}" class="alert alert-danger small mt-1"></div>
                     <input th:field="*{propertyLocationId.city}" id="city" type="text"  class="form-control" placeholder="City">
                 </div>
                 <div class="col-md-4 form-group">
+                    <div th:if="${#fields.hasErrors('propertyLocationId.state')}" th:errors="*{propertyLocationId.state}" class="alert alert-danger small mt-1"></div>
                     <input id="state" th:field="*{propertyLocationId.state}" type="text"  class="form-control" placeholder="State">
                 </div>
                 <div class="col-md-4 form-group">
+                    <div th:if="${#fields.hasErrors('propertyLocationId.country')}" th:errors="*{propertyLocationId.country}" class="alert alert-danger small mt-1"></div>
                     <input id="country" th:field="*{propertyLocationId.country}" type="text"  class="form-control" placeholder="Country">
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12 form-group">
                     <label class="mt-2 heading_font font_sub_heading_color">Estate Agency</label>
+                    <div th:if="${#fields.hasErrors('estateAgencyId.name')}" th:errors="*{estateAgencyId.name}" class="alert alert-danger small mt-1"></div>
                     <input id="agencyName" th:field="*{estateAgencyId.name}" type="text" class="form-control" placeholder="Estate Agency Name">
                 </div>
             </div>
@@ -118,10 +128,10 @@
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
 
 <script>
-console.log($('#content'));
-    $('#content').summernote({
-        height: 100
-    });
+    console.log($('#content'));
+        $('#content').summernote({
+            height: 100
+        });
 </script>
 
 </body>

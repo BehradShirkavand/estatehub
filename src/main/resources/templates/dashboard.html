@@ -308,18 +308,18 @@
                                 <label class="property-title text-left">
                                     [[${propertyPost.propertyTitle}]]
                                     <div class="mt-1">
-                            <span class="title-span small"
-                                  sec:authorize="hasAuthority('Seller')"
-                                  th:text="'('+ @{${propertyPost.totalCandidates}}+' Candidates Applied)'">
-                            </span>
-                                        <span class="title-span small"
-                                              sec:authorize="hasAuthority('Buyer')"
-                                              th:if="${propertyPost.isActive == true}"
-                                        >(Applied)</span>
-                                        <span class="title-span small"
-                                              sec:authorize="hasAuthority('Buyer')"
-                                              th:if="${propertyPost.isSaved == true}"
-                                        >(Saved)</span>
+                                            <span class="title-span small"
+                                                  sec:authorize="hasAuthority('Seller')"
+                                                  th:text="'('+ @{${propertyPost.totalCandidates}}+' Candidates Applied)'">
+                                            </span>
+                                            <span class="title-span small"
+                                                  sec:authorize="hasAuthority('Buyer')"
+                                                  th:if="${propertyPost.isActive == true}"
+                                            >(Applied)</span>
+                                            <span class="title-span small"
+                                                  sec:authorize="hasAuthority('Buyer')"
+                                                  th:if="${propertyPost.isSaved == true}"
+                                            >(Saved)</span>
                                     </div>
                                 </label>
                             </div>

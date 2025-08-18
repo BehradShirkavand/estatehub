@@ -1,10 +1,12 @@
 package com.behrad.estatehub.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -20,18 +22,24 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
+    @NotBlank(message = "Email is required.")
+    @Email(message = "Please provide a valid email address.")
     @Column(unique = true)
     private String email;
 
-    @NotEmpty
+    @NotBlank(message = "Password is required.")
+    @Size(min = 4, message = "Password must be at least 4 characters.")
     private String password;
 
     private boolean isActive;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @CreationTimestamp
+    @Column(updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date registrationDate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @NotNull(message = "User type must be selected.")
+    @ManyToOne//(cascade = CascadeType.ALL)
     @JoinColumn(name = "userTypeId", referencedColumnName = "userTypeId")
     private UsersType userTypeId;
 }

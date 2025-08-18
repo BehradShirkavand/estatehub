@@ -34,12 +34,14 @@ public class WebSecurityConfig {
             "/*.css",
             "/*.js",
             "/*.js.map",
-            "/fonts**",
+            "/fonts/**",
             "/favicon.ico",
             "/resources/**",
             "/error",
             "/forgot-password/**",
-            "/reset-password/**"
+            "/reset-password/**",
+            "images/**",
+            "photos/**"
     };
 
     @Bean
